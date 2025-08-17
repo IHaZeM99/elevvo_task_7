@@ -59,8 +59,8 @@ function App() {
     );
     const data = await response.json();
     if (!response.ok) {
-      console.error('Error fetching weather data:', data);
       setLoading(false);
+      alert('Error fetching weather data:');
       return;
     }
     setWeather(data);
@@ -89,6 +89,24 @@ function App() {
     }
     fetchWeather();
   };
+
+  // Function to get the next three days' names
+  const getNextThreeDays = () => {
+    const days = [];
+    const today = new Date();
+    
+    for (let i = 1; i <= 3; i++) {
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + i);
+      const dayName = nextDay.toLocaleDateString('en-US', { weekday: 'short' });
+      days.push(dayName);
+    }
+    
+    return days;
+  };
+
+  const nextDays = getNextThreeDays();
+  console.log('Next three days:', nextDays);
 
   return (
     <div className="h-screen bg-gradient-to-br from-gray-800 to-gray-950 flex items-center justify-center">
@@ -171,19 +189,43 @@ function App() {
 
             <div className="w-full flex justify-between items-center mt-5">
               <div className="flex flex-col items-center">
-                <p className="text-white">Mon</p>
-                <img src="/sun.png" alt="sunny" className="w-12 h-12" />
-                <p className="text-white">25°C</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p className="text-white">Tue</p>
-                <img src="/cloud.png" alt="cloudy" className="w-12 h-12" />
-                <p className="text-white">22°C</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p className="text-white">Wed</p>
+                <p className="text-white">{nextDays[0]}</p>
+                {forecast.list[0].weather[0].main === "Clear" && (
+                  <img src="/sun.png" alt="sunny" className="w-12 h-12" />
+                )}
+                {forecast.list[0].weather[0].main === "Clouds" && (
+                  <img src="/cloud.png" alt="cloudy" className="w-12 h-12" />
+                )}
+              {forecast.list[0].weather[0].main === "Rain" && (
                 <img src="/rain.png" alt="rainy" className="w-12 h-12" />
-                <p className="text-white">20°C</p>
+              )}
+                <p className="text-white">{forecast.list[0].main.temp}°C</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <p className="text-white">{nextDays[1]}</p>
+                {forecast.list[1].weather[0].main === "Clear" && (
+                  <img src="/sun.png" alt="sunny" className="w-12 h-12" />
+                )}
+                {forecast.list[1].weather[0].main === "Clouds" && (
+                  <img src="/cloud.png" alt="cloudy" className="w-12 h-12" />
+                )}
+                {forecast.list[1].weather[0].main === "Rain" && (
+                  <img src="/rain.png" alt="rainy" className="w-12 h-12" />
+                )}
+                <p className="text-white">{forecast.list[1].main.temp}°C</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <p className="text-white">{nextDays[2]}</p>
+                {forecast.list[2].weather[0].main === "Clear" && (
+                  <img src="/sun.png" alt="sunny" className="w-12 h-12" />
+                )}
+                {forecast.list[2].weather[0].main === "Clouds" && (
+                  <img src="/cloud.png" alt="cloudy" className="w-12 h-12" />
+                )}
+                {forecast.list[2].weather[0].main === "Rain" && (
+                  <img src="/rain.png" alt="rainy" className="w-12 h-12" />
+                )}
+                <p className="text-white">{forecast.list[2].main.temp}°C</p>
               </div>
             </div>
           </>
